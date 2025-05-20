@@ -1,0 +1,74 @@
+<!-- milestone 2 - index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I miei animali Preferiti</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>I miei animali Preferiti</h1>
+    </header>
+
+    <main>
+      <figure>
+        <img src="https://picsum.photos/400/300" alt="Immagine Casuale" />
+      </figure>
+      <div class="lista-animali">
+        <div id="react-root"></div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Creato con amore da... un collega sbadato! 🐾</p>
+    </footer>
+
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function App() {
+        const animalsChoices = [
+          "Cane",
+          "Gatto",
+          "Pappagallo",
+          "Cavallo",
+          "Panda",
+        ];
+        const [animals, setAnimals] = React.useState([]);
+
+        const aggiungiAnimale = () => {
+          const randomIndex = Math.floor(Math.random() * animalsChoices.length);
+          const animaleCasuale = animalsChoices[randomIndex];
+          setAnimals([...animals, animaleCasuale]);
+        };
+
+        return (
+          <>
+            <button onClick={aggiungiAnimale}>Aggiungi Animale</button>
+            <details>
+              <summary>Animali</summary>
+              <ul>
+                {animals.map((animale, index) => (
+                  <li key={index}>{animale}</li>
+                ))}
+              </ul>
+            </details>
+          </>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("react-root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
