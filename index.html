@@ -1,4 +1,3 @@
-<!-- milestone 2 - index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,24 +36,22 @@
 
     <script type="text/babel">
       function App() {
-        const animalsChoices = [
-          "Cane",
-          "Gatto",
-          "Pappagallo",
-          "Cavallo",
-          "Panda",
-        ];
         const [animals, setAnimals] = React.useState([]);
+        const [showModal, setShowModal] = React.useState(false);
+        const [inputValue, setInputValue] = React.useState("");
 
-        const aggiungiAnimale = () => {
-          const randomIndex = Math.floor(Math.random() * animalsChoices.length);
-          const animaleCasuale = animalsChoices[randomIndex];
-          setAnimals([...animals, animaleCasuale]);
+        const confermaAnimale = () => {
+          if (inputValue.trim() !== "") {
+            setAnimals([...animals, inputValue]);
+            setInputValue("");
+            setShowModal(false);
+          }
         };
 
         return (
           <>
-            <button onClick={aggiungiAnimale}>Aggiungi Animale</button>
+            <button onClick={() => setShowModal(true)}>Aggiungi Animale</button>
+
             <details>
               <summary>Animali</summary>
               <ul>
@@ -63,7 +60,47 @@
                 ))}
               </ul>
             </details>
+
+            <Modal
+              title="Aggiungi Animale"
+              show={showModal}
+              onClose={() => setShowModal(false)}
+              onConfirm={confermaAnimale}
+              content={
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Inserisci un animale"
+                />
+              }
+            />
           </>
+        );
+      }
+
+      function Modal({
+        title,
+        content,
+        show = false,
+        onClose = () => {},
+        onConfirm = () => {},
+      }) {
+        return (
+          show &&
+          ReactDOM.createPortal(
+            <div className="modal-container">
+              <div className="modal">
+                <h2>{title}</h2>
+                {content}
+                <div>
+                  <button onClick={onClose}>Annulla</button>
+                  <button onClick={onConfirm}>Conferma</button>
+                </div>
+              </div>
+            </div>,
+            document.body
+          )
         );
       }
 
